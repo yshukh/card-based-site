@@ -28,7 +28,6 @@ public abstract class GeneralDAO<E, K> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return ps;
     }
 

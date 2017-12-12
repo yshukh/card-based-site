@@ -51,48 +51,36 @@ public class ShowPostsService {
             if (onlyMyPosts) {
                 if (search.startsWith("#")) {
                     if (sortCriterion.equals(SortCriterion.PUBLISHED_FIRST)) {
-                        System.out.println("1" + "P");
                         posts = new PostDAO().getMyPostsByHTagPublFirst(new ArrayList<>(Arrays.asList(search.split("#"))), login, pageNumber);
                     } else if (sortCriterion.equals(SortCriterion.UNPUBLISHED_FIRST)) {
-                        System.out.println("2" + "P");
                         posts = new PostDAO().getMyPostsByHTagNotPublFirst(new ArrayList<>(Arrays.asList(search.split("#"))), login, pageNumber);
                     } else {
-                        System.out.println("3" + "P");
                         posts = new PostDAO().getMyPostsByHTagDef(new ArrayList<>(Arrays.asList(search.split("#"))), login, pageNumber);
                     }
                 } else {
                     if (sortCriterion.equals(SortCriterion.PUBLISHED_FIRST)) {
-                        System.out.println("4" + "P");
                         posts = new PostDAO().getMyPostsPubl(new ArrayList<>(Arrays.asList(search.split(" "))), login, pageNumber);
                     } else if (sortCriterion.equals(SortCriterion.UNPUBLISHED_FIRST)) {
-                        System.out.println("5" + "P");
                         posts = new PostDAO().getMyPostsNotPubl(new ArrayList<>(Arrays.asList(search.split(" "))), login, pageNumber);
                     } else {
-                        System.out.println("6" + "P");
                         posts = new PostDAO().getMyPostsDefault(new ArrayList<>(Arrays.asList(search.split(" "))), login, pageNumber);
                     }
                 }
             } else {
                 if (search.startsWith("#")) {
                     if (sortCriterion.equals(SortCriterion.BY_ALIEN_POSTS_FIRST)) {
-                        System.out.println("7" + "P");
                         posts = new PostDAO().getAllPostsByHTagAllienFirst(login, new ArrayList<>(Arrays.asList(search.split("#"))), pageNumber);
                     } else if (sortCriterion.equals(SortCriterion.BY_MY_POSTS_FIRST)) {
-                        System.out.println("8" + "P");
                         posts = new PostDAO().getAllPostsByHTagMyFirst(login, new ArrayList<>(Arrays.asList(search.split("#"))), pageNumber);
                     } else {
-                        System.out.println("9" + "P");
                         posts = new PostDAO().getAllPostsByHTagDef(new ArrayList<>(Arrays.asList(search.split("#"))), pageNumber);
                     }
                 } else {
                     if (sortCriterion.equals(SortCriterion.BY_ALIEN_POSTS_FIRST)) {
-                        System.out.println("10" + "P");
                         posts = new PostDAO().getAllPostsByWordsInnerFirst(login, new ArrayList<>(Arrays.asList(search.split(" "))), pageNumber);
                     } else if (sortCriterion.equals(SortCriterion.BY_MY_POSTS_FIRST)) {
-                        System.out.println("11" + "P");
                         posts = new PostDAO().getAllPostsByWordsMyFirst(login, new ArrayList<>(Arrays.asList(search.split(" "))), pageNumber);
                     } else {
-                        System.out.println("12" + "P");
                         posts = new PostDAO().getAllPostsByWordsDef(new ArrayList<>(Arrays.asList(search.split(" "))), pageNumber);
                     }
                 }
@@ -110,23 +98,16 @@ public class ShowPostsService {
         sortCriterion = SortCriterion.DEFAULT;
         this.onlyMyPosts = onlyMyPosts;
         pageNumber = 1;
-        try {
-            System.out.println("!!!!" + new PostDAO().countRowsAllPosts(searchCriterion));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
         List<Post> posts = new ArrayList<Post>();
         if(onlyMyPosts)
             try {
                 posts = new PostDAO().getMyPostsDefault(new ArrayList<String>(), login, pageNumber);
-                System.out.println("SERVICE (login),pageNumber" + login + ", " + pageNumber);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         else{
             try {
                 posts = new PostDAO().getAllPostsByWordsDef(new ArrayList<String>(), pageNumber);
-                System.out.println("SERVICE (login),pageNumber" + login + ", " + pageNumber);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
