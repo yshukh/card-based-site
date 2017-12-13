@@ -27,16 +27,95 @@ public class PostDAO extends GeneralDAO<Post, Integer> {
             + "where id_post = ?";
     private final String INSERT_POST = "INSERT INTO posts (title, text, published, date, image_link, author) "
             + "VALUES (?, ?, ?, ?, ?, ?)";
-    private final String SELECT_BY_WORD = "SELECT * FROM posts WHERE text LIKE ? OR title LIKE ?";
 
-    private final String SELECT_POSTS_GENERAL = "SELECT *, author=? AS col FROM posts WHERE (LOWER(title) LIKE LOWER(?) OR LOWER(text) LIKE LOWER(?)) AND published=true order BY col DESC, date DESC LIMIT 12 OFFSET ?";
+    @Override
+    public List<Post> getAll() throws SQLException {
+        List<Post> posts = new ArrayList<>();
+        PreparedStatement ps = getPrepareStatement(SELECT_ALL_POSTS);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Post post = new Post();
+            post.setId(rs.getInt(1));
+            post.setTitle(rs.getString(2));
+            post.setText(rs.getString(3));
+            post.setPublished(rs.getBoolean(4));
+            post.setDate(rs.getString(6));
+            post.setLinkImage(rs.getString(5));
+            post.setAuthor(rs.getString(7));
+            posts.add(post);
+        }
+        return posts;
+    }
 
-    private final String SELECT_POSTS_HASH_TAGS = "SELECT DISTINCT posts.*, posts_tags.post_id FROM posts JOIN posts_tags ON (posts.id_post=posts_tags.post_id) JOIN tags ON (posts_tags.tag_id=tags.tag_id AND (tag_title=?)) ORDER BY date DESC";
+    @Override
+    public Post update(Post entity) throws SQLException {
+
+        PreparedStatement ps = getPrepareStatement(UPDATE_POST);
+
+        ps.setString(1, entity.getTitle());
+        ps.setString(2, entity.getText());
+        ps.setBoolean(3, entity.isPublished());
+
+        Timestamp timestamp = Timestamp.valueOf(entity.getDate());
+        ps.setTimestamp(4, timestamp);
+
+        ps.setString(5, entity.getLinkImage());
+
+        ps.setInt(7, entity.getId());
+        ps.setString(6, entity.getAuthor());
+        ps.executeUpdate();
+
+        return getEntityById(entity.getId());
+    }
+
+    @Override
+    public Post getEntityById(Integer id) throws SQLException {
+        Post post = new Post();
+        PreparedStatement ps = getPrepareStatement(SELECT_BY_ID);
+        ps.setInt(1, id.intValue());
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            post.setId(rs.getInt(1));
+            post.setTitle(rs.getString(2));
+            post.setText(rs.getString(3));
+            post.setPublished(rs.getBoolean(4));
+            post.setDate(rs.getString(6));
+            post.setLinkImage(rs.getString(5));
+            post.setAuthor(rs.getString(7));
+        }
+        return post;
+    }
+
+    @Override
+    public boolean delete(Integer id) throws SQLException {
+        PreparedStatement ps = getPrepareStatement(DELETE_BY_ID);
+        ps.setInt(1, id.intValue());
+        int result = ps.executeUpdate();
+        return result != 0;
+    }
+
+    @Override
+    public boolean insert(Post entity) throws SQLException {
+        PreparedStatement ps = getPrepareStatement(INSERT_POST);
+        ps.setString(1, entity.getTitle());
+        ps.setString(2, entity.getText());
+        ps.setBoolean(3, entity.isPublished());
+
+        Timestamp timestamp = Timestamp.valueOf(entity.getDate());
+        ps.setTimestamp(4, timestamp);
+
+        ps.setString(5, entity.getLinkImage());
+        ps.setString(6, entity.getAuthor());
+
+        int result = ps.executeUpdate();
+        return result != 0;
+    }
 
 
-
-
-    //query search by word(-s) in my posts default sort(by date)
+//    queries for searching and pagination(SELECT1 - SELECT12): ...
+//
+//
+//    query search by word(-s) in my posts default sort(by date)
     private String SELECT1 = "SELECT * FROM posts WHERE ((LOWER(title) LIKE LOWER(?) OR LOWER(text) LIKE LOWER(?))) AND (author=?) order BY date DESC LIMIT 12 OFFSET ?";
 
     public List<Post> getMyPostsDefault(ArrayList<String> criterionWords, String login, int pageNumber) throws SQLException {
@@ -188,7 +267,7 @@ public class PostDAO extends GeneralDAO<Post, Integer> {
         return posts;
     }
 
-//    query search by words in all posts sort for inner first
+    //query search by words in all posts sort for inner first
     private String SELECT5 = "SELECT *, author=? AS col FROM posts WHERE ((LOWER(title) LIKE LOWER(?) OR LOWER(text) LIKE LOWER(?))) AND (published=true) ORDER BY col, date DESC LIMIT 12 OFFSET ?";
     public List<Post> getAllPostsByWordsInnerFirst(String login, ArrayList<String> criterionWords, int pageNumber) throws SQLException {
         if(criterionWords.size() > 1) {
@@ -383,7 +462,6 @@ public class PostDAO extends GeneralDAO<Post, Integer> {
         }
         return posts;
     }
-
 
     //query search hash tag in all posts default sort by date
     private String SELECT10 = "SELECT DISTINCT posts.*, posts_tags.post_id FROM posts JOIN posts_tags ON (posts.id_post=posts_tags.post_id) JOIN tags ON (posts_tags.tag_id=tags.tag_id AND (tag_title=LOWER(?))) WHERE(published=true) ORDER BY date DESC limit 12 offset ?";
@@ -625,117 +703,6 @@ public class PostDAO extends GeneralDAO<Post, Integer> {
         return 0;
     }
 
-    //select by params search by word(all posts)
-    public List<Post> getPostsByParam(String author, String wordsToSearch, int pageNumber) throws SQLException {
-        List<Post> posts = new ArrayList<Post>();
-        PreparedStatement ps = getPrepareStatement(SELECT_POSTS_GENERAL);
-        ps.setString(1, author);
-        ps.setString(2, "%" + wordsToSearch + "%");
-        ps.setString(3, "%" + wordsToSearch + "%");
-        ps.setInt(5, (pageNumber - 1) * 12);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()){
-            Post post = new Post();
-            post.setId(rs.getInt(1));
-            post.setTitle(rs.getString(2));
-            post.setText(rs.getString(3));
-            post.setPublished(rs.getBoolean(4));
-            post.setLinkImage(rs.getString(5));
-            post.setDate(rs.getString(6));
-            post.setAuthor(rs.getString(7));
-            posts.add(post);
-        }
-
-        return posts;
-    }
-
-    //select by params search by hash-tag(allposts)
-    @Override
-    public List<Post> getAll() throws SQLException {
-        List<Post> posts = new ArrayList<>();
-        PreparedStatement ps = getPrepareStatement(SELECT_ALL_POSTS);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            Post post = new Post();
-            post.setId(rs.getInt(1));
-            post.setTitle(rs.getString(2));
-            post.setText(rs.getString(3));
-            post.setPublished(rs.getBoolean(4));
-            post.setDate(rs.getString(6));
-            post.setLinkImage(rs.getString(5));
-            post.setAuthor(rs.getString(7));
-            posts.add(post);
-        }
-        return posts;
-    }
-
-    //select by params search by word(my posts)
-    //select by params search by hash-tag(my posts)
-
-    @Override
-    public Post update(Post entity) throws SQLException {
-
-        PreparedStatement ps = getPrepareStatement(UPDATE_POST);
-
-        ps.setString(1, entity.getTitle());
-        ps.setString(2, entity.getText());
-        ps.setBoolean(3, entity.isPublished());
-
-        Timestamp timestamp = Timestamp.valueOf(entity.getDate());
-        ps.setTimestamp(4, timestamp);
-
-        ps.setString(5, entity.getLinkImage());
-
-        ps.setInt(7, entity.getId());
-        ps.setString(6, entity.getAuthor());
-        ps.executeUpdate();
-
-        return getEntityById(entity.getId());
-    }
-
-    @Override
-    public Post getEntityById(Integer id) throws SQLException {
-        Post post = new Post();
-        PreparedStatement ps = getPrepareStatement(SELECT_BY_ID);
-        ps.setInt(1, id.intValue());
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            post.setId(rs.getInt(1));
-            post.setTitle(rs.getString(2));
-            post.setText(rs.getString(3));
-            post.setPublished(rs.getBoolean(4));
-            post.setDate(rs.getString(6));
-            post.setLinkImage(rs.getString(5));
-            post.setAuthor(rs.getString(7));
-        }
-        return post;
-    }
-
-    @Override
-    public boolean delete(Integer id) throws SQLException {
-        PreparedStatement ps = getPrepareStatement(DELETE_BY_ID);
-        ps.setInt(1, id.intValue());
-        int result = ps.executeUpdate();
-        return result != 0;
-    }
-
-    @Override
-    public boolean insert(Post entity) throws SQLException {
-        PreparedStatement ps = getPrepareStatement(INSERT_POST);
-        ps.setString(1, entity.getTitle());
-        ps.setString(2, entity.getText());
-        ps.setBoolean(3, entity.isPublished());
-
-        Timestamp timestamp = Timestamp.valueOf(entity.getDate());
-        ps.setTimestamp(4, timestamp);
-
-        ps.setString(5, entity.getLinkImage());
-        ps.setString(6, entity.getAuthor());
-
-        int result = ps.executeUpdate();
-        return result != 0;
-    }
-
     public int getMaxId() throws SQLException {
         final String GET_MAX_ID = "SELECT id_post FROM posts WHERE id_post = (select max(id_post) FROM posts)";
         PreparedStatement ps = getPrepareStatement(GET_MAX_ID);
@@ -745,36 +712,6 @@ public class PostDAO extends GeneralDAO<Post, Integer> {
             result = rs.getInt(1);
         }
         return result;
-    }
-
-    public List<Post> getPostsByTag(int id_tag) throws SQLException {
-        List<Post> posts = new ArrayList<>();
-        List<Integer> id_posts =(new TagDAO()).getIdPostsByTag(id_tag);
-        for (Integer id_post: id_posts) {
-            posts.add(getEntityById(id_post));
-        }
-        return posts;
-    }
-
-    public List<Post> getPostsByWord(String word) throws SQLException {
-        PreparedStatement ps = getPrepareStatement(SELECT_BY_WORD);
-        ps.setString(1, "%" + word + "%");
-        ps.setString(2, "%" + word + "%");
-
-        List<Post> posts = new ArrayList<>();
-        ResultSet rs = ps.executeQuery();
-        while(rs.next()){
-            Post postCur = new Post();
-            postCur.setTitle(rs.getString(2));
-            postCur.setId(rs.getInt(1));
-            postCur.setText(rs.getString(3));
-            postCur.setPublished(rs.getBoolean(4));
-            postCur.setDate(rs.getString(6));
-            postCur.setLinkImage(rs.getString(5));
-            postCur.setAuthor(rs.getString(7));
-            posts.add(postCur);
-        }
-        return posts;
     }
 
     public class TagDAO extends GeneralDAO<Tag, Integer>{
@@ -846,8 +783,6 @@ public class PostDAO extends GeneralDAO<Post, Integer> {
         private final String INSERT_TAG_POST = "INSERT INTO posts_tags (tag_id, post_id) VALUES (?, ?)";
         private final String SELECT_TAG_BY_TITLE = "SELECT * FROM tags WHERE tag_title = ?";
 
-        private final String SELECT_IDPOSTS_BY_TAG = "SELECT post_id FROM posts_tags WHERE tag_id = ?";
-
         public List<Tag> getAllTagsByPost(int id_post) throws SQLException {
             List<Tag> tags = new ArrayList<>();
             PreparedStatement ps = getPrepareStatement(SELECT_TAGS_BY_POST_ID);
@@ -882,17 +817,6 @@ public class PostDAO extends GeneralDAO<Post, Integer> {
                 tag.setId_tag(rs.getInt(1));
             }
             return tag;
-        }
-
-        public List<Integer> getIdPostsByTag(int id_tag) throws SQLException {
-            List<Integer> id_posts = new ArrayList<>();
-            PreparedStatement ps = getPrepareStatement(SELECT_IDPOSTS_BY_TAG);
-            ps.setInt(1, id_tag);
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-                id_posts.add(rs.getInt(1));
-            }
-            return id_posts;
         }
 
     }

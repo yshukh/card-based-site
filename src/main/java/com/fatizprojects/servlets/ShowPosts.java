@@ -22,9 +22,9 @@ public class ShowPosts extends HttpServlet{
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Post> posts = new ArrayList<>();
+        List<Post> posts;
         String login = "";
-        String criterion = "";
+        String criterion;
         int param = -1;
 
 
@@ -41,7 +41,7 @@ public class ShowPosts extends HttpServlet{
             ShowPostsService showPostsService = (ShowPostsService) req.getSession(false).getAttribute("POSTSERVICE");
             if (req.getRequestURI().substring(6).equals("search")) {
                 criterion = (String) req.getParameter("criterion");
-                posts = showPostsService.getPosts_search(criterion, login);
+                posts = showPostsService.getPosts_search(criterion, login, true);
             } else {
                 switch (param){
                     case -1:

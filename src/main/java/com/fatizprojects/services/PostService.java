@@ -100,17 +100,6 @@ public class PostService {
         return result;
     }
 
-    public static List<Post> getPosts(int id_tag){
-        List<Post> posts = new ArrayList<>();
-        PostDAO postDAO = new PostDAO();
-        try {
-            posts = postDAO.getPostsByTag(id_tag);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return posts;
-    }
-
     public static int getMaxId(){
         try {
             return new PostDAO().getMaxId();
@@ -118,16 +107,6 @@ public class PostService {
             e.printStackTrace();
             return -1;
         }
-    }
-
-    public static List<Post> getPostByWord(String word){
-        List<Post> posts = new ArrayList<>();
-        try {
-            posts = (new PostDAO()).getPostsByWord(word);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return posts;
     }
 
 }

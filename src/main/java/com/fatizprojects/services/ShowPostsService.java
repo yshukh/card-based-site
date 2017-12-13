@@ -41,10 +41,11 @@ public class ShowPostsService {
         return onlyMyPosts;
     }
 
-    public List<Post> getPosts_search(String search, String login){
+    public List<Post> getPosts_search(String search, String login, boolean searchFunc){
         searchCriterion = search;
+        if(searchFunc)
+            pageNumber = 1;
 
-        System.out.println("PAGES NUMBER = " + this.getPagesCount(login));
         List<Post> posts = new ArrayList<Post>();
 
         try {
@@ -118,13 +119,13 @@ public class ShowPostsService {
     public List<Post> getPosts_sort(SortCriterion sortCriterion, String login){
         this.sortCriterion = sortCriterion;
 
-        return getPosts_search(this.searchCriterion, login);
+        return getPosts_search(this.searchCriterion, login, false);
     }
 
     public List<Post> getPosts_page(int pageNumber, String login){
         this.pageNumber = pageNumber;
 
-        return getPosts_search(this.searchCriterion, login);
+        return getPosts_search(this.searchCriterion, login, false);
     }
 
     public int getPagesCount(String login) {

@@ -38,8 +38,15 @@ public class AuthenticationFilter implements Filter {
                 request.setAttribute("logined", true);
                 request.setAttribute("login", user);
             }
-            else
+            else {
                 request.setAttribute("logined", false);
+                if(req.getRequestURI().contains("/Blog/addPost") ||
+                        req.getRequestURI().contains("/Blog/editPost") ||
+                        req.getRequestURI().contains("/Blog/logout") ||
+                        req.getRequestURI().contains("/Blog/sendComment")){
+                    req.getRequestDispatcher("/WEB-INF/forms/accessError.jsp").forward(req, response);
+                }
+            }
 
             if(req.getRequestURI().substring(6).equals("showPosts") ||
                     req.getRequestURI().substring(6).equals("search")||
