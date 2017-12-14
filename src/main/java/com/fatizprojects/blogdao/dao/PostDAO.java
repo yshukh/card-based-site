@@ -722,7 +722,7 @@ public class PostDAO extends GeneralDAO<Post, Integer> {
         private final String UPDATE_TAG = "UPDATE tags set tag_title = ? "
                 + "where tag_id = ?";
         private final String INSERT_TAG = "INSERT INTO tags (tag_title) "
-                + "VALUES (?)";
+                + "VALUES (LOWER(?))";
 
         @Override
         public List<Tag> getAll() throws SQLException {
@@ -781,7 +781,7 @@ public class PostDAO extends GeneralDAO<Post, Integer> {
 
         private final String SELECT_TAGS_BY_POST_ID = "SELECT * FROM posts_tags WHERE post_id = ?";
         private final String INSERT_TAG_POST = "INSERT INTO posts_tags (tag_id, post_id) VALUES (?, ?)";
-        private final String SELECT_TAG_BY_TITLE = "SELECT * FROM tags WHERE tag_title = ?";
+        private final String SELECT_TAG_BY_TITLE = "SELECT * FROM tags WHERE tag_title = LOWER(?)";
 
         public List<Tag> getAllTagsByPost(int id_post) throws SQLException {
             List<Tag> tags = new ArrayList<>();
