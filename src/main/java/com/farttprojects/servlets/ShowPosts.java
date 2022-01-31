@@ -22,7 +22,6 @@ public class ShowPosts extends HttpServlet{
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    	System.out.print("Show POSTS do get");
         List<Post> posts;
         String login = "";
         String criterion;
