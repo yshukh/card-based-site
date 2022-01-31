@@ -1,10 +1,10 @@
-package com.fatizprojects.servlets;
+package com.farttprojects.servlets;
 
-import com.fatizprojects.blogdao.model.Comment;
-import com.fatizprojects.blogdao.model.Tag;
-import com.fatizprojects.services.CommentService;
-import com.fatizprojects.services.PostService;
-import com.fatizprojects.services.UserService;
+import com.farttprojects.blogdao.model.Comment;
+import com.farttprojects.blogdao.model.Tag;
+import com.farttprojects.services.CommentService;
+import com.farttprojects.services.PostService;
+import com.farttprojects.services.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

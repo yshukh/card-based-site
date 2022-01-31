@@ -1,4 +1,4 @@
-group 'com.fatizprojects.blog'
+group 'com.farttprojects.blog'
 version '1.0'
 
 apply plugin: "java"

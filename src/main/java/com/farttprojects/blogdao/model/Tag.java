@@ -1,4 +1,4 @@
-package com.fatizprojects.blogdao.model;
+package com.farttprojects.blogdao.model;
 
 /**
  * Created by fatiz on 03.12.2017.

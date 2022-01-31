@@ -1,7 +1,7 @@
-package com.fatizprojects.services;
+package com.farttprojects.services;
 
-import com.fatizprojects.blogdao.dao.CommentDAO;
-import com.fatizprojects.blogdao.model.Comment;
+import com.farttprojects.blogdao.dao.CommentDAO;
+import com.farttprojects.blogdao.model.Comment;
 
 import java.sql.SQLException;
 import java.text.ParseException;

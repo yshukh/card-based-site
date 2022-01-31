@@ -1,4 +1,4 @@
-package com.fatizprojects.servlets;
+package com.farttprojects.servlets;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

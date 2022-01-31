@@ -1,7 +1,7 @@
-package com.fatizprojects.services;
+package com.farttprojects.services;
 
-import com.fatizprojects.blogdao.dao.UserDAO;
-import com.fatizprojects.blogdao.model.User;
+import com.farttprojects.blogdao.dao.UserDAO;
+import com.farttprojects.blogdao.model.User;
 
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;

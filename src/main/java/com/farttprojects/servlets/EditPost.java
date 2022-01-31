@@ -1,8 +1,8 @@
-package com.fatizprojects.servlets;
+package com.farttprojects.servlets;
 
-import com.fatizprojects.blogdao.model.Post;
-import com.fatizprojects.blogdao.model.Tag;
-import com.fatizprojects.services.PostService;
+import com.farttprojects.blogdao.model.Post;
+import com.farttprojects.blogdao.model.Tag;
+import com.farttprojects.services.PostService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;

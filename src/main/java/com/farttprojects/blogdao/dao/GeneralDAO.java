@@ -1,4 +1,4 @@
-package com.fatizprojects.blogdao.dao;
+package com.farttprojects.blogdao.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

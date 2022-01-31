@@ -1,8 +1,8 @@
-package com.fatizprojects.services;
+package com.farttprojects.services;
 
-import com.fatizprojects.blogdao.dao.PostDAO;
-import com.fatizprojects.blogdao.model.Post;
-import com.fatizprojects.blogdao.model.Tag;
+import com.farttprojects.blogdao.dao.PostDAO;
+import com.farttprojects.blogdao.model.Post;
+import com.farttprojects.blogdao.model.Tag;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

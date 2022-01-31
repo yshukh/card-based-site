@@ -1,4 +1,4 @@
-package com.fatizprojects.blogdao.model;
+package com.farttprojects.blogdao.model;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.fatizprojects.blogdao.dao;
+package com.farttprojects.blogdao.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class DBconnection {
 
     private static String LOGIN = "postgres";
-    private static String PASS = "iknow1997";
+    private static String PASS = "admin";
     private static String URL = "jdbc:postgresql://localhost:5432/blog";
 
     private static Connection connection;

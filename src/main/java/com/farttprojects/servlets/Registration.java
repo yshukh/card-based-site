@@ -1,6 +1,6 @@
-package com.fatizprojects.servlets;
+package com.farttprojects.servlets;
 
-import com.fatizprojects.services.UserService;
+import com.farttprojects.services.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

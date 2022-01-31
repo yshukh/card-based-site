@@ -1,7 +1,7 @@
-package com.fatizprojects.filters;
+package com.farttprojects.filters;
 
-import com.fatizprojects.services.PostService;
-import com.fatizprojects.services.ShowPostsService;
+import com.farttprojects.services.PostService;
+import com.farttprojects.services.ShowPostsService;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;

@@ -1,6 +1,6 @@
-package com.fatizprojects.blogdao.dao;
+package com.farttprojects.blogdao.dao;
 
-import com.fatizprojects.blogdao.model.User;
+import com.farttprojects.blogdao.model.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

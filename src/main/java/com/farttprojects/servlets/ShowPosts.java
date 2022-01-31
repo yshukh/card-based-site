@@ -1,8 +1,8 @@
-package com.fatizprojects.servlets;
+package com.farttprojects.servlets;
 
-import com.fatizprojects.blogdao.model.Post;
-import com.fatizprojects.services.ShowPostsService;
-import com.fatizprojects.services.SortCriterion;
+import com.farttprojects.blogdao.model.Post;
+import com.farttprojects.services.ShowPostsService;
+import com.farttprojects.services.SortCriterion;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,6 +22,7 @@ public class ShowPosts extends HttpServlet{
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    	System.out.print("Show POSTS do get");
         List<Post> posts;
         String login = "";
         String criterion;

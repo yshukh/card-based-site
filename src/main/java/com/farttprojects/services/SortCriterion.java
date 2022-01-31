@@ -1,4 +1,4 @@
-package com.fatizprojects.services;
+package com.farttprojects.services;
 
 /**
  * Created by fatiz on 08.12.2017.
